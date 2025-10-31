@@ -1,0 +1,109 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+ <meta charset="UTF-8" /> 
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <title>Animated Toast Notification System</title> 
+ <style> 
+ body { 
+ font-family: sans-serif; 
+ background: linear-gradient(135deg, #ece9e6, #ffffff); 
+ padding: 2rem; 
+ color: #333; 
+ } 
+ .toast-container { 
+ position: fixed; 
+ top: 1rem; 
+ right: 1rem; 
+ z-index: 9999; 
+ display: flex; 
+ flex-direction: column; 
+ gap: 0.75rem; 
+ } 
+ .toast { 
+ display: flex; 
+ align-items: center; 
+ padding: 1rem 1.5rem; 
+ border-radius: 8px; 
+ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
+ color: #fff; 
+ animation: slideIn 0.4s ease forwards; 
+ position: relative; 
+ cursor: pointer; 
+ min-width: 280px; 
+ font-size: 0.95rem; 
+ } 
+ .toast.success { background: linear-gradient(to right, #56ab2f, #a8e063); }  .toast.error { background: linear-gradient(to right, #e53935, #e35d5b); }  .toast.warning { background: linear-gradient(to right, #f7971e, #ffd200); }  .toast.info { background: linear-gradient(to right, #00c6ff, #0072ff); } 
+ .toast .icon { 
+ margin-right: 1rem; 
+ font-size: 1.2rem; 
+ }
+ .toast .message { 
+ flex-grow: 1; 
+ } 
+ .toast .close-btn { 
+ background: none; 
+ border: none; 
+ color: inherit; 
+ font-size: 1rem; 
+ cursor: pointer; 
+ margin-left: 1rem; 
+ } 
+ @keyframes slideIn { 
+ from { opacity: 0; transform: translateX(100%); }  to { opacity: 1; transform: translateX(0); }  } 
+ @keyframes slideOut { 
+ from { opacity: 1; transform: translateX(0); }  to { opacity: 0; transform: translateX(100%); }  } 
+ @media (max-width: 600px) { 
+ .toast { 
+ width: 90vw; 
+ } 
+ } 
+ button { 
+ background-color: #0078d7; 
+ color: #fff; 
+ border: none; 
+ padding: 0.6rem 1rem; 
+ margin: 0.3rem; 
+ border-radius: 6px; 
+ cursor: pointer; 
+ font-size: 1rem; 
+ transition: background-color 0.3s ease;  } 
+ button:hover { 
+ background-color: #005fa3; 
+ } 
+ </style> 
+</head> 
+<body> 
+ <h2>Animated Toast Notification System</h2>
+ <button onclick="showToast('success', 'Operation completed successfully!')">Success</button>  <button onclick="showToast('error', 'Something went wrong.')">Error</button>  <button onclick="showToast('warning', 'Be careful with that action.')">Warning</button>  <button onclick="showToast('info', 'Here is some information.')">Info</button> 
+ <div class="toast-container" id="toastContainer"></div> 
+ <script> 
+ const icons = { 
+ success: ' ', 
+ error: ' ', 
+ warning: ' ', 
+ info: ' ' 
+ }; 
+ function showToast(type, message) { 
+ const toast = document.createElement('div'); 
+ toast.className = `toast ${type}`; 
+ toast.innerHTML = ` 
+ <span class="icon">${icons[type]}</span> 
+ <span class="message">${message}</span> 
+ <button class="close-btn" onclick="removeToast(this.parentElement)">&times;</button>  `; 
+ toast.addEventListener('mouseenter', () => clearTimeout(toast.timer));  toast.addEventListener('mouseleave', () => setAutoDismiss(toast)); 
+ document.getElementById('toastContainer').appendChild(toast); 
+ setAutoDismiss(toast); 
+ } 
+ function setAutoDismiss(toast) { 
+ toast.timer = setTimeout(() => { 
+ toast.style.animation = 'slideOut 0.3s forwards'; 
+ toast.addEventListener('animationend', () => toast.remove()); 
+ }, 3000); 
+ } 
+ function removeToast(toast) { 
+ toast.style.animation = 'slideOut 0.3s forwards'; 
+ toast.addEventListener('animationend', () => toast.remove()); 
+ } 
+ </script> 
+</body> 
+</html>
